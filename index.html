@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>META-WHALE.COM</title>
+
+<style>
+:root{
+--bg-dark:#0b1220;
+--bg-card:#111c2d;
+--green:#00ff88;
+--red:#ff4d4d;
+--blue:#00c3ff;
+--soft:#94a3b8;
+--white:#ffffff;
+}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#0b1220,#071028);
+color:white;
+text-align:center;
+}
+
+h1{
+margin-top:25px;
+font-size:28px;
+background:linear-gradient(90deg,#00c3ff,#00ff88);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+button{
+padding:10px 18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(45deg,#00c3ff,#00ff88);
+color:black;
+transition:.3s;
+box-shadow:0 0 15px rgba(0,255,136,.3);
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px rgba(0,255,136,.6);
+}
+
+input{
+padding:8px;
+width:160px;
+border-radius:8px;
+border:1px solid #1f2937;
+background:#0f172a;
+color:white;
+outline:none;
+}
+
+.wrapper{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:20px;
+max-width:1600px;
+margin:20px auto;
+padding:20px;
+}
+
+.box{
+background:rgba(17,28,45,0.95);
+padding:18px;
+border-radius:18px;
+border:1px solid #1e293b;
+box-shadow:0 0 25px rgba(0,0,0,.6);
+transition:.3s;
+}
+
+.box:hover{
+transform:translateY(-5px);
+box-shadow:0 0 30px rgba(0,255,136,.3);
+}
+
+.box h3{
+color:var(--blue);
+margin-bottom:8px;
+}
+
+.binary{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-top:12px;
+}
+
+.level{
+display:flex;
+gap:6px;
+margin:4px 0;
+}
+
+.node{
+width:28px;
+height:28px;
+border-radius:50%;
+background:linear-gradient(145deg,#1e293b,#0f172a);
+border:1px solid #334155;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:8px;
+font-weight:bold;
+color:var(--soft);
+}
+
+.node.active{
+background:linear-gradient(145deg,#00ff88,#00c853);
+color:black;
+}
+
+.income{
+color:var(--green);
+font-weight:600;
+margin-top:6px;
+}
+
+.recycle{
+color:var(--red);
+font-weight:600;
+margin-top:4px;
+}
+
+.section-title{
+grid-column:1/span 5;
+font-size:22px;
+margin-top:25px;
+color:white;
+font-weight:700;
+}
+
+.planner{
+margin:50px auto;
+padding:25px;
+background:rgba(17,28,45,0.95);
+border-radius:20px;
+max-width:1100px;
+border:1px solid #1e293b;
+}
+
+#targetResult,#memberResult{
+margin-top:15px;
+text-align:left;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔥 (Mrzakir156) META-WHALE BOOST CALCULATOR</h1>
+
+<button onclick="addMember()">Add Member</button>
+
+<div style="margin:20px;font-size:20px;color:#00ff88;font-weight:600;">
+Grand Total Earnings: <span id="grandTotal">0</span> IGT
+</div>
+
+<div class="wrapper" id="wrapper"></div>
+
+<div class="planner">
+
+<h2>🎯 Target Planner</h2>
+<input type="number" id="targetAmount" placeholder="Enter Target Income">
+<button onclick="calculateTarget()">Calculate</button>
+<div id="targetResult"></div>
+
+<hr>
+
+<h2>📊 Member Based Income Planner</h2>
+<input type="number" id="memberCount" placeholder="Enter Total Members">
+<button onclick="calculateMembers()">Calculate Income</button>
+<div id="memberResult"></div>
+
+</div>
+
+<script>
+
+let globalCounter=1;
+let grandTotal=0;
+
+const configs=[
+{ name:"S30", levels:[1,2,4,8,16], price:20 },
+{ name:"S14", levels:[1,2,4,8], price:160 },
+{ name:"S6", levels:[1,2,4], price:800 },
+{ name:"S3", levels:[1,3], price:2000 },
+{ name:"S2", levels:[1,2], price:4000 },
+{ name:"S30 PRO", levels:[1,2,4,8,16], price:2000 },
+{ name:"S14 PRO", levels:[1,2,4,8], price:6000 },
+{ name:"S6 PRO", levels:[1,2,4], price:12000 },
+{ name:"S3 PRO", levels:[1,3], price:18000 },
+{ name:"S2 PRO", levels:[1,2], price:27000 }
+];
+
+let boxes=[];
+
+function incomeLogic(index,node,level,price){
+let last=(node.dataset.position==node.dataset.total-1);
+
+switch(index){
+
+case 0: case 5:
+if(last) return 0;
+if(level==2) return price*0.25;
+if(level==3) return price*0.25;
+if(level==4) return price*0.50;
+return 0;
+
+case 1: case 6:
+if(last) return 0;
+if(level==2) return price*0.20;
+if(level==3) return price*0.80;
+return 0;
+
+case 2: case 7:
+if(last) return 0;
+if(level==2) return price;
+return 0;
+
+case 3: case 8:
+if(level==1 && !last) return price;
+return 0;
+
+case 4: case 9:
+if(level==1 && !last) return price;
+return 0;
+
+}
+
+return 0;
+}
+
+function createSystem(){
+let wrapper=document.getElementById("wrapper");
+
+configs.forEach((config,i)=>{
+
+if(i==0){
+let t=document.createElement("div");
+t.className="section-title";
+t.innerText="BASIC BOXES";
+wrapper.appendChild(t);
+}
+if(i==5){
+let t=document.createElement("div");
+t.className="section-title";
+t.innerText="PRO BOXES";
+wrapper.appendChild(t);
+}
+
+let div=document.createElement("div");
+div.className="box";
+div.innerHTML=`<h3>${config.name} (${config.price} IGT)</h3>
+<div class="binary" id="binary${i}"></div>
+<div class="income">Income: <span id="income${i}">0</span></div>
+<div class="recycle" id="re${i}"></div>`;
+wrapper.appendChild(div);
+
+let binary=document.getElementById("binary"+i);
+let nodes=[];
+
+config.levels.forEach((count,levelIndex)=>{
+let level=document.createElement("div");
+level.className="level";
+for(let j=0;j<count;j++){
+let node=document.createElement("div");
+node.className="node";
+node.dataset.level=levelIndex;
+node.dataset.position=j;
+node.dataset.total=count;
+if(levelIndex==0){
+node.innerText="YOU";
+node.classList.add("active");
+}
+level.appendChild(node);
+nodes.push(node);
+}
+binary.appendChild(level);
+});
+
+let perCycleIncome=0;
+nodes.forEach((node,index)=>{
+if(index==0) return;
+let level=parseInt(node.dataset.level);
+perCycleIncome+=incomeLogic(i,node,level,config.price);
+});
+
+boxes.push({
+nodes:nodes,
+index:1,
+income:0,
+recycle:0,
+price:config.price,
+perCycleIncome:perCycleIncome,
+membersPerCycle:nodes.length-1
+});
+
+});
+
+}
+
+createSystem();
+
+function addMember(){
+boxes.forEach((box,i)=>{
+if(box.index<box.nodes.length){
+let node=box.nodes[box.index];
+node.innerText=globalCounter;
+node.classList.add("active");
+
+let level=parseInt(node.dataset.level);
+let income=incomeLogic(i,node,level,box.price);
+
+box.income+=income;
+grandTotal+=income;
+
+document.getElementById("income"+i).innerText=box.income;
+box.index++;
+}
+
+if(box.index==box.nodes.length){
+box.recycle++;
+document.getElementById("re"+i).innerText="🔄 "+box.recycle;
+setTimeout(()=>{
+for(let j=1;j<box.nodes.length;j++){
+box.nodes[j].innerText="";
+box.nodes[j].classList.remove("active");
+}
+box.index=1;
+},500);
+}
+});
+
+document.getElementById("grandTotal").innerText=grandTotal;
+globalCounter++;
+}
+
+function calculateTarget(){
+let target=parseFloat(document.getElementById("targetAmount").value);
+if(!target) return;
+
+let result="";
+let minMembers=Infinity;
+let bestBox="";
+
+boxes.forEach((box,i)=>{
+if(box.perCycleIncome>0){
+let cyclesNeeded=Math.ceil(target/box.perCycleIncome);
+let totalMembers=cyclesNeeded*box.membersPerCycle;
+
+result+=`<div><b>${configs[i].name}</b> → ${totalMembers} Members</div>`;
+
+if(totalMembers<minMembers){
+minMembers=totalMembers;
+bestBox=configs[i].name;
+}
+}
+});
+
+result+=`<hr><b>🔥 Fastest Box: ${bestBox}</b>`;
+document.getElementById("targetResult").innerHTML=result;
+}
+
+function calculateMembers(){
+let members=parseInt(document.getElementById("memberCount").value);
+if(!members) return;
+
+let result="";
+let grand=0;
+
+boxes.forEach((box,i)=>{
+let fullCycles=Math.floor(members/box.membersPerCycle);
+let remaining=members%box.membersPerCycle;
+
+let totalIncome=fullCycles*box.perCycleIncome;
+
+for(let j=1;j<=remaining;j++){
+let node=box.nodes[j];
+let level=parseInt(node.dataset.level);
+totalIncome+=incomeLogic(i,node,level,box.price);
+}
+
+grand+=totalIncome;
+result+=`<div><b>${configs[i].name}</b> → ${totalIncome} IGT</div>`;
+});
+
+result+=`<hr><h2>🔥 Total Combined Income: ${grand} IGT</h2>`;
+document.getElementById("memberResult").innerHTML=result;
+}
+
+</script>
+
+</body>
+</html>
