@@ -27,7 +27,25 @@
             padding: 0;
         }
 
-        /* DARK THEME - MIRROR EFFECT */
+        /* ===== ULTRA MODE (VIBRANT) ===== */
+        .ultra-mode {
+            --ultra-green: #00ff9d;
+            --ultra-blue: #3b82f6;
+            --ultra-purple: #a855f7;
+            --ultra-gold: #ffd700;
+            --ultra-glow: 0 0 8px currentColor; /* glow kam kiya */
+        }
+
+        /* ===== HD MODE (FADED/LIGHT) ===== */
+        body:not(.ultra-mode) {
+            --ultra-green: #a3e0c0;
+            --ultra-blue: #9ab0e0;
+            --ultra-purple: #c9b0e0;
+            --ultra-gold: #e0c080;
+            --ultra-glow: none;
+        }
+
+        /* DARK THEME - BASE */
         .dark-theme {
             --bg-primary: #0a0f1e;
             --bg-secondary: #141b2b;
@@ -35,28 +53,28 @@
             --glass: rgba(255, 255, 255, 0.05);
             --glass-hover: rgba(255, 255, 255, 0.1);
             --border: rgba(255, 255, 255, 0.1);
-            --border-glow: rgba(0, 255, 157, 0.3);
+            --border-glow: rgba(0, 255, 157, 0.2);
             --text-primary: #ffffff;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
             --card-bg: rgba(10, 15, 30, 0.7);
-
+            
             --income-20: #c6e9c6;
             --income-25: #a3d8a3;
             --income-50: #6ec06e;
             --income-80: #2e8b57;
             --income-100: #1e5a3a;
-
+            
             --noincome-20: #fad1cf;
             --noincome-25: #f7b9b5;
             --noincome-50: #f19b95;
             --noincome-80: #e74c3c;
             --noincome-100: #b03a2e;
-
-            --green: #00ff9d;
-            --blue: #3b82f6;
-            --purple: #a855f7;
-            --gold: #ffd700;
+            
+            --green: var(--ultra-green);
+            --blue: var(--ultra-blue);
+            --purple: var(--ultra-purple);
+            --gold: var(--ultra-gold);
             --mirror: rgba(255, 255, 255, 0.1);
         }
 
@@ -73,32 +91,45 @@
             --text-secondary: #334155;
             --text-muted: #64748b;
             --card-bg: rgba(255, 255, 255, 0.9);
-
+            
             --income-20: #c6e9c6;
             --income-25: #a3d8a3;
             --income-50: #6ec06e;
             --income-80: #2e8b57;
             --income-100: #1e5a3a;
-
+            
             --noincome-20: #fad1cf;
             --noincome-25: #f7b9b5;
             --noincome-50: #f19b95;
             --noincome-80: #e74c3c;
             --noincome-100: #b03a2e;
-
-            --green: #059669;
-            --blue: #2563eb;
-            --purple: #7c3aed;
-            --gold: #b45309;
+            
+            --green: var(--ultra-green);
+            --blue: var(--ultra-blue);
+            --purple: var(--ultra-purple);
+            --gold: var(--ultra-gold);
             --mirror: rgba(255, 255, 255, 0.5);
+        }
+
+        /* apply subtle glow in ultra mode */
+        .ultra-mode .gaming-btn,
+        .ultra-mode .action-btn.primary,
+        .ultra-mode .node.you-node,
+        .ultra-mode .zoom-logo {
+            box-shadow: var(--ultra-glow);
+        }
+        
+        /* income box glow - almost invisible */
+        .income-box span:last-child {
+            color: var(--green);
+            font-weight: 800;
+            text-shadow: 0 0 3px var(--green); /* very subtle glow */
         }
 
         /* ========== MIRROR EFFECT ========== */
         * {
             transform: translateZ(0);
-            -webkit-transform: translateZ(0);
             backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
         }
 
         body {
@@ -132,7 +163,6 @@
             100% { transform: rotate(0deg) scale(1); }
         }
 
-        /* Main container */
         .main-container {
             flex: 1 0 auto;
             width: 100%;
@@ -152,7 +182,7 @@
         }
 
         /* ========== GLASS CARDS ========== */
-        .glass-card, .slot-card, .stat-card, .slot-selector, .color-guide, .info-card {
+        .glass-card, .slot-card, .stat-card, .slot-selector, .color-guide, .info-card, .disclaimer-card {
             background: var(--card-bg);
             backdrop-filter: blur(15px);
             border: 1px solid var(--border);
@@ -172,7 +202,7 @@
             font-size: 2.2rem;
             font-weight: 900;
             text-transform: uppercase;
-            background: linear-gradient(145deg, #00ff9d, #3b82f6, #a855f7, #ffd700);
+            background: linear-gradient(145deg, var(--green), var(--blue), var(--purple), var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
@@ -193,10 +223,10 @@
             text-decoration: underline;
         }
 
-        /* ========== ZOOM LOGO (DIRECT LINK) ========== */
+        /* ========== ZOOM LOGO (POPUP TRIGGER) ========== */
         .zoom-logo {
             position: absolute;
-            left: 15px;
+            left: 60px;
             cursor: pointer;
             z-index: 10000;
             display: flex;
@@ -204,15 +234,14 @@
             gap: 6px;
             background: var(--glass);
             backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
+            border: 2px solid var(--green);
             border-radius: 40px;
             padding: 8px 16px;
-            transition: all 0.05s ease;
-            text-decoration: none;
+            transition: all 0.1s ease;
             color: inherit;
         }
         .zoom-logo:hover {
-            border-color: var(--green);
+            border-color: var(--gold);
             transform: scale(1.02);
         }
         .zoom-logo img {
@@ -223,12 +252,11 @@
         .zoom-logo span {
             font-weight: 700;
             color: var(--green);
-            font-size: 0.9rem;
         }
-        /* page1 specific zoom (bigger & bottom center) */
+        /* page1 zoom big bottom center */
         #page1 .zoom-logo {
             top: auto;
-            bottom: 80px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
             padding: 12px 28px;
@@ -236,67 +264,79 @@
             border-width: 2px;
         }
         #page1 .zoom-logo img { width: 32px; height: 32px; }
-        #page1 .zoom-logo span { font-size: 1.2rem; }
-
-        /* page2 zoom (smaller top left) */
+        /* page2 zoom small top left */
         #page2 .zoom-logo {
             top: 10px;
             left: 10px;
             padding: 5px 12px;
         }
-        #page2 .zoom-logo img { width: 20px; height: 20px; }
-        #page2 .zoom-logo span { font-size: 0.8rem; }
 
-        /* ========== INFO CARD (BOTTOM DESCRIPTION) ========== */
-        .info-card {
-            border-radius: 20px;
-            padding: 15px;
-            margin: 20px 0 10px;
+        /* ========== ZOOM POPUP ========== */
+        .zoom-popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            z-index: 100000;
+        }
+        .zoom-popup.active {
+            display: flex;
+        }
+        .popup-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--green);
+            border-radius: 30px;
+            padding: 25px;
+            max-width: 350px;
+            width: 90%;
             text-align: center;
+            box-shadow: 0 0 30px var(--green);
+        }
+        .popup-card h3 {
+            color: var(--green);
+            margin-bottom: 15px;
+        }
+        .meeting-detail {
+            background: var(--glass);
+            padding: 15px;
+            border-radius: 20px;
+            margin: 15px 0;
             border: 1px solid var(--gold);
         }
-        .info-card p {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            margin: 5px 0;
-        }
-        .info-card .highlight {
-            color: var(--green);
-            font-weight: 700;
-        }
-        .info-card .time {
+        .time-india {
             color: var(--gold);
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: 800;
-        }
-        .info-card .meeting-details {
-            background: rgba(0,255,157,0.1);
-            border-radius: 15px;
-            padding: 10px;
             margin: 10px 0;
-            border: 1px dashed var(--green);
         }
-
-        /* ========== JOIN ZOOM BUTTON (NEW) ========== */
         .join-zoom-btn {
-            display: inline-block;
-            background: linear-gradient(145deg, #0e71eb, #0b5ac9);
-            border: 2px solid var(--green);
+            background: linear-gradient(145deg, var(--green), var(--blue));
+            border: none;
             border-radius: 40px;
-            padding: 12px 35px;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 800;
-            text-decoration: none;
-            margin: 15px auto;
-            box-shadow: 0 0 15px var(--green);
-            transition: all 0.05s ease;
-            letter-spacing: 1px;
+            padding: 15px 30px;
+            color: black;
+            font-weight: bold;
+            font-size: 1.3rem;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            border: 2px solid white;
+            transition: 0.1s;
         }
         .join-zoom-btn:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 25px var(--green);
-            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--green);
+        }
+        .close-popup {
+            margin-top: 10px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            text-decoration: underline;
         }
 
         /* ========== THEME TOGGLES ========== */
@@ -317,16 +357,78 @@
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-primary);
-            transition: all 0.05s ease;
+            transition: 0.05s;
         }
-
         .theme-toggle:hover {
-            transform: scale(1.02);
             border-color: var(--green);
         }
-
         .theme-toggle.secondary {
             right: 100px;
+        }
+
+        /* ========== PAGE 1 WELCOME ========== */
+        .welcome-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            max-width: 800px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+        .start-btn {
+            padding: 18px 50px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 60px;
+            background: linear-gradient(145deg, var(--green), var(--blue), var(--purple));
+            border: 3px solid white;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--green);
+            transition: 0.1s;
+            margin: 15px 0;
+        }
+        .start-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* ========== DISCLAIMER CARD ========== */
+        .disclaimer-card {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 10px;
+            padding: 20px;
+            border: 2px solid var(--gold);
+            border-radius: 25px;
+            text-align: center;
+        }
+        .disclaimer-title {
+            color: #ffaa00;
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px orange;
+        }
+        .disclaimer-text {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .disclaimer-text a {
+            color: var(--green);
+            font-weight: bold;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--green);
+        }
+        .disclaimer-text .pdf-link {
+            display: inline-block;
+            background: rgba(0,255,157,0.2);
+            padding: 5px 15px;
+            border-radius: 30px;
+            margin: 5px 0;
+            border: 1px solid var(--green);
         }
 
         /* ========== SLOT SELECTOR ========== */
@@ -337,16 +439,13 @@
             margin: 10px 0 20px;
             text-align: center;
         }
-
         .selector-title {
             font-size: 1.3rem;
             font-weight: 700;
             color: var(--gold);
             text-transform: uppercase;
             margin-bottom: 12px;
-            letter-spacing: 1px;
         }
-
         .selector-controls {
             display: flex;
             gap: 12px;
@@ -354,7 +453,6 @@
             align-items: center;
             flex-wrap: wrap;
         }
-
         .slot-input-group {
             display: flex;
             align-items: center;
@@ -364,12 +462,6 @@
             border-radius: 40px;
             border: 1px solid var(--green);
         }
-
-        .slot-input-group span {
-            font-size: 1.1rem;
-            color: var(--gold);
-        }
-
         .slot-input-group input {
             width: 60px;
             padding: 8px;
@@ -381,7 +473,6 @@
             color: var(--text-primary);
             font-weight: 700;
         }
-
         .gaming-btn {
             background: linear-gradient(145deg, var(--blue), var(--purple));
             border: none;
@@ -392,18 +483,7 @@
             font-weight: 700;
             cursor: pointer;
             border: 2px solid var(--green);
-            transition: all 0.05s ease;
         }
-
-        .gaming-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px var(--border-glow);
-        }
-
-        .gaming-btn:active {
-            transform: translateY(2px);
-        }
-
         .investment-preview {
             font-size: 1.1rem;
             font-weight: 700;
@@ -421,27 +501,16 @@
             gap: 8px;
             margin-bottom: 15px;
         }
-
         .stat-card {
             border-radius: 15px;
             padding: 10px 5px;
             text-align: center;
-            transition: all 0.05s ease;
         }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--green);
-        }
-
         .stat-label {
             color: var(--text-secondary);
             font-size: 0.7rem;
             text-transform: uppercase;
-            margin-bottom: 3px;
-            font-weight: 600;
         }
-
         .stat-value {
             font-size: 1.2rem;
             font-weight: 800;
@@ -458,7 +527,6 @@
             margin: 15px 0;
             flex-wrap: wrap;
         }
-
         .action-btn {
             background: var(--glass);
             border: 1px solid var(--border);
@@ -471,19 +539,21 @@
             gap: 4px;
             font-size: 0.75rem;
             font-weight: 600;
-            transition: all 0.05s ease;
         }
-
         .action-btn:hover {
             background: var(--glass-hover);
             border-color: var(--green);
-            transform: translateY(-1px);
         }
-
         .action-btn.primary {
             background: linear-gradient(145deg, var(--blue), var(--purple));
             color: white;
             border: none;
+        }
+        .action-btn.slot-add {
+            background: var(--glass);
+            border-color: var(--green);
+            padding: 4px 8px;
+            font-size: 0.7rem;
         }
 
         /* ========== NODE STYLES ========== */
@@ -491,7 +561,7 @@
             width: 100%;
             aspect-ratio: 1 / 1;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             border: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -500,30 +570,22 @@
             color: var(--text-primary);
             font-weight: 600;
             position: relative;
-            transition: all 0.05s ease;
+            transition: all 0.05s;
         }
-
         .node:hover {
             transform: scale(1.05);
-            filter: brightness(1.15);
-            z-index: 10;
             border-color: var(--green);
         }
-
-        /* Income Colors */
-        .node.income-20 { background: var(--income-20) !important; color: #000 !important; border: 2px solid #2e7d32; }
-        .node.income-25 { background: var(--income-25) !important; color: #000 !important; border: 2px solid #2e7d32; }
-        .node.income-50 { background: var(--income-50) !important; color: #000 !important; border: 2px solid #1b5e20; }
-        .node.income-80 { background: var(--income-80) !important; color: #fff !important; border: 2px solid #0a3a0a; }
-        .node.income-100 { background: var(--income-100) !important; color: #fff !important; border: 2px solid #052205; }
-
-        .node.noincome-20 { background: var(--noincome-20) !important; color: #000 !important; border: 2px solid #b71c1c; }
-        .node.noincome-25 { background: var(--noincome-25) !important; color: #000 !important; border: 2px solid #b71c1c; }
-        .node.noincome-50 { background: var(--noincome-50) !important; color: #000 !important; border: 2px solid #8b0000; }
-        .node.noincome-80 { background: var(--noincome-80) !important; color: #fff !important; border: 2px solid #5a0000; }
-        .node.noincome-100 { background: var(--noincome-100) !important; color: #fff !important; border: 2px solid #300000; }
-
-        /* YOU Node */
+        .node.income-20 { background: var(--income-20) !important; color: #000; border: 2px solid #2e7d32; }
+        .node.income-25 { background: var(--income-25) !important; color: #000; border: 2px solid #2e7d32; }
+        .node.income-50 { background: var(--income-50) !important; color: #000; border: 2px solid #1b5e20; }
+        .node.income-80 { background: var(--income-80) !important; color: #fff; border: 2px solid #0a3a0a; }
+        .node.income-100 { background: var(--income-100) !important; color: #fff; border: 2px solid #052205; }
+        .node.noincome-20 { background: var(--noincome-20) !important; color: #000; border: 2px solid #b71c1c; }
+        .node.noincome-25 { background: var(--noincome-25) !important; color: #000; border: 2px solid #b71c1c; }
+        .node.noincome-50 { background: var(--noincome-50) !important; color: #000; border: 2px solid #8b0000; }
+        .node.noincome-80 { background: var(--noincome-80) !important; color: #fff; border: 2px solid #5a0000; }
+        .node.noincome-100 { background: var(--noincome-100) !important; color: #fff; border: 2px solid #300000; }
         .node.you-node {
             background: linear-gradient(145deg, var(--green), var(--blue)) !important;
             color: white !important;
@@ -531,129 +593,39 @@
             border: 2px solid var(--gold);
         }
 
-        .node.you-node::before {
-            content: attr(data-slot-text);
-            position: absolute;
-            top: -16px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-secondary);
-            color: var(--gold);
-            font-size: 0.5rem;
-            padding: 2px 6px;
-            border-radius: 8px;
-            border: 1px solid var(--gold);
-            white-space: nowrap;
-            z-index: 20;
-            font-weight: 700;
-        }
-
-        /* S3 Special */
-        .level-row[data-s3="true"] .nodes {
-            grid-template-columns: repeat(3, 1fr) !important;
-        }
-
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-        }
-
-        .tooltip:hover .tooltip-text {
-            display: block;
-        }
-
-        .tooltip-text {
-            display: none;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-secondary);
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-size: 0.5rem;
-            white-space: nowrap;
-            border: 1px solid var(--border);
-            z-index: 1000;
-            font-weight: 600;
-        }
-
         /* ========== SLOTS GRID ========== */
         .slots-grid {
             display: none;
             grid-template-columns: 1fr;
-            gap: 15px;
+            gap: 10px;
             margin-top: 15px;
-            margin-bottom: 15px;
         }
-
-        .slots-grid.visible {
-            display: grid;
-        }
-
+        .slots-grid.visible { display: grid; }
         .slot-card {
             border-radius: 16px;
             padding: 12px;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
-
         .slot-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 8px;
-            font-size: 0.9rem;
         }
-
-        .slot-name {
-            font-weight: 800;
-            color: var(--green);
-        }
-
-        .slot-price {
-            color: var(--blue);
-            font-weight: 700;
-            background: rgba(59,130,246,0.15);
-            padding: 3px 10px;
-            border-radius: 20px;
-        }
-
-        /* Matrix Levels */
-        .matrix-levels {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin: 6px 0;
-        }
-
-        .level-row {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .level-label {
-            width: 22px;
-            color: var(--text-secondary);
-            font-size: 0.6rem;
-            font-weight: 700;
-        }
-
-        .nodes {
-            display: grid;
-            gap: 2px;
-            flex: 1;
-        }
-
+        .slot-name { font-weight: 800; color: var(--green); }
+        .slot-price { color: var(--blue); font-weight: 700; background: rgba(59,130,246,0.15); padding: 3px 10px; border-radius: 20px; }
+        .matrix-levels { display: flex; flex-direction: column; gap: 4px; margin: 6px 0; }
+        .level-row { display: flex; align-items: center; gap: 4px; }
+        .level-label { width: 22px; color: var(--text-secondary); font-size: 0.6rem; font-weight: 700; }
+        .nodes { display: grid; gap: 2px; flex: 1; }
         .level-row[data-level="0"] .nodes { grid-template-columns: repeat(1, 1fr); }
         .level-row[data-level="1"] .nodes { grid-template-columns: repeat(2, 1fr); }
         .level-row[data-level="2"] .nodes { grid-template-columns: repeat(4, 1fr); }
         .level-row[data-level="3"] .nodes { grid-template-columns: repeat(8, 1fr); }
         .level-row[data-level="4"] .nodes { grid-template-columns: repeat(16, 1fr); }
+        .level-row[data-s3="true"] .nodes { grid-template-columns: repeat(3, 1fr) !important; }
 
-        /* Slot Footer */
         .slot-footer {
             display: flex;
             justify-content: space-between;
@@ -662,7 +634,6 @@
             padding-top: 6px;
             border-top: 1px solid var(--border);
         }
-
         .income-box {
             background: rgba(0,255,157,0.1);
             border: 1px solid var(--green);
@@ -673,12 +644,11 @@
             gap: 5px;
             font-size: 0.7rem;
         }
-
         .income-box span:last-child {
             color: var(--green);
             font-weight: 800;
+            text-shadow: 0 0 2px var(--green); /* minimum glow */
         }
-
         .recycle-badge {
             background: rgba(59,130,246,0.15);
             border: 1px solid var(--blue);
@@ -687,12 +657,7 @@
             color: var(--blue);
             font-weight: 700;
             font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            gap: 3px;
         }
-
-        /* Slot Progress */
         .slot-progress {
             margin: 5px 0 2px;
             height: 4px;
@@ -700,114 +665,32 @@
             border-radius: 2px;
             overflow: hidden;
         }
-
         .slot-progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--green), var(--blue));
             border-radius: 2px;
-            transition: width 0.05s ease;
+            transition: width 0.05s;
         }
 
-        .slot-progress-text {
-            font-size: 0.6rem;
-            color: var(--text-secondary);
-            text-align: right;
-            font-weight: 600;
+        .slot-add-container {
+            display: flex;
+            justify-content: flex-end;
+            margin: 5px 0;
         }
 
-        /* ========== NEW: PER SLOT ADD BUTTON ========== */
-        .slot-add-btn {
-            background: linear-gradient(145deg, var(--green), #00cc88);
-            border: none;
-            border-radius: 20px;
-            padding: 5px 12px;
-            color: black;
-            font-weight: 700;
-            font-size: 0.7rem;
-            cursor: pointer;
-            margin-left: 8px;
-            border: 1px solid var(--gold);
-            transition: all 0.05s ease;
-        }
-        .slot-add-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 10px var(--green);
-        }
-
-        /* ========== COLOR GUIDE ========== */
         .color-guide {
             border-radius: 16px;
             padding: 12px;
             margin: 15px 0;
         }
-
         .guide-title {
             font-size: 1.1rem;
             color: var(--gold);
             margin-bottom: 12px;
             text-align: center;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .guide-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-
-        .guide-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 8px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 30px;
-            border: 1px solid var(--border);
-        }
-
-        .guide-circle {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.6rem;
-            font-weight: bold;
-            color: black;
-            border: 2px solid rgba(255,255,255,0.8);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            flex-shrink: 0;
-        }
-
-        .guide-circle.income-20 { background: var(--income-20); }
-        .guide-circle.income-25 { background: var(--income-25); }
-        .guide-circle.income-50 { background: var(--income-50); }
-        .guide-circle.income-80 { background: var(--income-80); color: white; }
-        .guide-circle.income-100 { background: var(--income-100); color: white; }
-        .guide-circle.noincome-20 { background: var(--noincome-20); }
-        .guide-circle.noincome-25 { background: var(--noincome-25); }
-        .guide-circle.noincome-50 { background: var(--noincome-50); }
-        .guide-circle.noincome-80 { background: var(--noincome-80); color: white; }
-        .guide-circle.noincome-100 { background: var(--noincome-100); color: white; }
-        .guide-circle.you { background: linear-gradient(145deg, var(--green), var(--blue)); color: white; }
-
-        .guide-text {
-            color: var(--text-primary);
-            font-size: 0.7rem;
-            font-weight: 600;
-            flex: 1;
-        }
-
-        .guide-text small {
-            font-size: 0.6rem;
-            color: var(--text-secondary);
-            display: block;
-        }
-
-        /* ========== FOOTER ========== */
         .footer-note {
             text-align: center;
             color: var(--text-muted);
@@ -816,24 +699,18 @@
             padding: 10px 0;
             margin-top: auto;
             width: 100%;
-            flex-shrink: 0;
         }
         .footer-note a {
             color: var(--gold);
             text-decoration: none;
         }
-        .footer-note a:hover {
-            text-decoration: underline;
-        }
 
-        /* ========== TOAST ========== */
         .toast-container {
             position: fixed;
             top: 10px;
             right: 10px;
             z-index: 99999;
         }
-
         .toast {
             background: var(--glass);
             backdrop-filter: blur(15px);
@@ -842,35 +719,24 @@
             padding: 8px 15px;
             margin-bottom: 5px;
             color: var(--text-primary);
-            animation: slideIn 0.05s ease;
-            font-size: 0.8rem;
-            font-weight: 600;
+            animation: slideIn 0.05s;
         }
-
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* ========== MODAL ========== */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
             z-index: 100000;
             align-items: center;
             justify-content: center;
         }
-
-        .modal.active {
-            display: flex;
-        }
-
+        .modal.active { display: flex; }
         .modal-content {
             background: var(--bg-secondary);
             border: 2px solid var(--green);
@@ -882,705 +748,486 @@
             overflow-y: auto;
         }
 
-        /* ========== RESPONSIVE ========== */
         @media (min-width: 600px) {
-            body { padding: 15px; }
-            .main-heading h1 { font-size: 2.5rem; }
             .stats-grid { grid-template-columns: repeat(4, 1fr); }
-            .guide-grid { grid-template-columns: repeat(3, 1fr); }
             .slots-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (min-width: 900px) {
             .slots-grid { grid-template-columns: repeat(3, 1fr); }
-            .guide-grid { grid-template-columns: repeat(4, 1fr); }
         }
-
         @media (min-width: 1200px) {
             .slots-grid { grid-template-columns: repeat(4, 1fr); }
-            .guide-grid { grid-template-columns: repeat(5, 1fr); }
         }
     </style>
 </head>
-<body class="dark-theme">
+<body class="dark-theme ultra-mode">
+    <!-- Theme Toggles -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="themeIcon">🌙</span>
+        <span id="themeText">DARK</span>
+    </div>
+    <div class="theme-toggle secondary" onclick="toggleMode()">
+        <span id="modeIcon">⚡</span>
+        <span id="modeText">ULTRA</span>
+    </div>
 
-<!-- Theme Toggles -->
-<div class="theme-toggle" onclick="toggleTheme()">
-    <span id="themeIcon">🌙</span>
-    <span id="themeText">DARK</span>
-</div>
+    <!-- Toast & Modals -->
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="modal" id="statsModal">
+        <div class="modal-content" id="modalContent"></div>
+    </div>
 
-<div class="theme-toggle secondary" onclick="toggleMode()">
-    <span id="modeIcon">⚡</span>
-    <span id="modeText">ULTRA</span>
-</div>
-
-<!-- Toast Container -->
-<div class="toast-container" id="toastContainer"></div>
-
-<!-- Stats Modal -->
-<div class="modal" id="statsModal">
-    <div class="modal-content">
-        <div class="modal-header" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-            <h3 style="color: var(--green);">📊 STATISTICS</h3>
-            <button onclick="closeModal()" style="background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer;">×</button>
+    <!-- Zoom Popup -->
+    <div class="zoom-popup" id="zoomPopup">
+        <div class="popup-card">
+            <h3>🐋 ZOOM MEETING</h3>
+            <div class="meeting-detail">
+                <p>🆔 <strong>ID:</strong> 6204406337</p>
+                <p>🔐 <strong>PWD:</strong> 1111</p>
+                <p class="time-india">⏰ 8:55 PM INDIA</p>
+            </div>
+            <button class="join-zoom-btn" onclick="joinZoom()">🚀 JOIN NOW</button>
+            <button class="close-popup" onclick="closeZoomPopup()">close</button>
         </div>
-        <div id="modalContent"></div>
-    </div>
-</div>
-
-<!-- Page 1 - Welcome -->
-<div id="page1" class="page active">
-    <!-- Zoom logo (still there but we also have big button) -->
-    <a class="zoom-logo" href="https://us06web.zoom.us/j/6204406337?pwd=1z3ma5UUHezXZx2PSeSvALym5DIL1a.1" target="_blank">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff9d'%3E%3Cpath d='M22.5 4.5L15 9v6l7.5 4.5v-15zM12 4.5H3c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h9c1.1 0 2-.9 2-2v-11c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E" alt="zoom">
-        <span>ZOOM MEETING</span>
-    </a>
-
-    <div class="main-heading">
-        <h1>WHALE BOOST<br>CALCULATOR</h1>
-        <div class="powered">powered by <a href="https://t.me/Mrzakir156" target="_blank">@t.me/Mrzakir156</a></div>
     </div>
 
-    <div class="glass-card" style="text-align: center; padding: 30px 20px; max-width: 400px; margin: 20px auto; border-radius: 25px;">
-        <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 1rem;">⚡ ULTRA FAST & SMOOTH ⚡</p>
-        <button onclick="enterDashboard()" style="padding: 15px 40px; font-size: 1.5rem; font-weight: bold; border-radius: 40px; background: linear-gradient(145deg, var(--green), var(--blue), var(--purple)); border: none; color: white; cursor: pointer;">
-            🚀 START
-        </button>
-    </div>
-
-    <!-- JOIN ZOOM BUTTON - DIRECT LINK (NEW) -->
-    <div style="text-align: center;">
-        <a class="join-zoom-btn" href="https://us06web.zoom.us/j/6204406337?pwd=1z3ma5UUHezXZx2PSeSvALym5DIL1a.1" target="_blank">
-            🎥 JOIN ZOOM MEETING NOW
-        </a>
-    </div>
-
-    <!-- Info Card -->
-    <div class="info-card" style="max-width: 600px; margin: 20px auto;">
-        <p class="time">🇮🇳 8:55 PM INDIA TIME</p>
-        <div class="meeting-details">
-            <p><span class="highlight">🔗 MEETING LINK:</span> us06web.zoom.us/j/6204406337</p>
-            <p><span class="highlight">🆔 MEETING ID:</span> 6204406337</p>
-            <p><span class="highlight">🔐 PASSWORD:</span> 1111</p>
-        </div>
-        <p>✨ <span class="highlight">WHALE BOOST COMMUNITY</span> ✨</p>
-        <p>JOIN FAST • LIMITED SEATS • POWERED BY @mrzakir156</p>
-        <p style="font-size: 0.8rem; margin-top: 8px;">⚡ CLICK ON BUTTON ABOVE TO JOIN DIRECTLY ⚡</p>
-    </div>
-</div>
-
-<!-- Page 2 - Dashboard -->
-<div id="page2" class="page">
-    <!-- Zoom direct link - small top left -->
-    <a class="zoom-logo" href="https://us06web.zoom.us/j/6204406337?pwd=1z3ma5UUHezXZx2PSeSvALym5DIL1a.1" target="_blank">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff9d'%3E%3Cpath d='M22.5 4.5L15 9v6l7.5 4.5v-15zM12 4.5H3c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h9c1.1 0 2-.9 2-2v-11c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E" alt="zoom">
-        <span>ZOOM</span>
-    </a>
-
-    <div class="main-container">
-        <div class="main-heading">
-            <h1>WHALE BOOST<br>CALCULATOR</h1>
-            <div class="powered"> CHAMPION TEAM <span>INDIA</span> · <a href="https://t.me/Mrzakir156" target="_blank">@t.me/Mrzakir156</a></div>
+    <!-- PAGE 1 - WELCOME -->
+    <div id="page1" class="page active">
+        <div class="zoom-logo" onclick="openZoomPopup()">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff9d'%3E%3Cpath d='M22.5 4.5L15 9v6l7.5 4.5v-15zM12 4.5H3c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h9c1.1 0 2-.9 2-2v-11c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E" alt="zoom">
+            <span>ZOOM MEETING</span>
         </div>
 
-        <!-- JOIN ZOOM BUTTON IN DASHBOARD TOO (NEW) -->
-        <div style="text-align: center; margin: 10px 0;">
-            <a class="join-zoom-btn" href="https://us06web.zoom.us/j/6204406337?pwd=1z3ma5UUHezXZx2PSeSvALym5DIL1a.1" target="_blank" style="padding: 8px 25px; font-size: 1rem;">
-                🎥 JOIN ZOOM
-            </a>
-        </div>
+        <div class="welcome-container">
+            <div class="main-heading">
+                <h1>WHALE BOOST<br>CALCULATOR</h1>
+                <div class="powered">powered by <a href="https://t.me/Mrzakir156" target="_blank">@t.me/Mrzakir156</a></div>
+            </div>
 
-        <!-- Slot Selector -->
-        <div class="slot-selector">
-            <div class="selector-title">⚡ SELECT SLOTS ⚡</div>
-            <div class="selector-controls">
-                <div class="slot-input-group">
-                    <span>🎮</span>
-                    <input type="number" id="slotInput" min="1" max="10" value="5">
-                    <span>SLOTS</span>
+            <button class="start-btn" onclick="enterDashboard()">🚀 START</button>
+
+            <!-- DISCLAIMER CARD -->
+            <div class="disclaimer-card">
+                <div class="disclaimer-title">⚠️ DEMO VERSION ⚠️</div>
+                <div class="disclaimer-text">
+                    <p>This is only a demo concept. It has no connection with any real platform or service.</p>
+                    <p>This design helps you understand how a real project might work. It is 100% safe and created with 80% accuracy based on the knowledge provided in the PDF document.</p>
+                    <p>📄 <strong>NOTE:</strong> For more detailed information, please refer to the official PDF document:<br>
+                    <a href="https://t.me/metawhale/2139" target="_blank" class="pdf-link">📘 View PDF Document</a><br>
+                    (Telegram channel: Meta Whale)</p>
+                    <p>For additional support, contact: <a href="https://t.me/Mrzakir156" target="_blank">t.me/Mrzakir156</a></p>
+                    <p style="margin-top:10px;">🙏 Thank you for your interest!</p>
                 </div>
-                <button class="gaming-btn" onclick="updateSlotSelection()">LAUNCH</button>
-                <div class="investment-preview" id="investmentPreview">0 IGT</div>
-            </div>
-        </div>
-
-        <!-- Stats -->
-        <div class="stats-grid" id="statsContainer" style="display: none;">
-            <div class="stat-card">
-                <div class="stat-label">INVEST</div>
-                <div class="stat-value" id="totalInvestment">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">INCOME</div>
-                <div class="stat-value" id="grandTotal">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">ROI</div>
-                <div class="stat-value" id="roiDisplay">0%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">MEMBERS</div>
-                <div class="stat-value" id="totalMembers">0</div>
-            </div>
-        </div>
-
-        <!-- Actions -->
-        <div class="action-bar" id="actionContainer" style="display: none;">
-            <button class="action-btn primary" onclick="addMemberToAll()">➕ ADD TO ALL</button>
-            <button class="action-btn" onclick="toggleAutoMember()">🔄 <span id="autoMemberText">AUTO</span></button>
-            <button class="action-btn" onclick="undo()">↩️ UNDO</button>
-            <button class="action-btn" onclick="showStats()">📊 STATS</button>
-            <button class="action-btn" onclick="resetSystem()">🔄 RESET</button>
-        </div>
-
-        <!-- Progress -->
-        <div class="progress-container" id="progressContainer" style="display: none; margin: 15px 0; background: var(--glass); border-radius: 12px; padding: 10px;">
-            <div class="progress-bar" style="height: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
-                <div class="progress-fill" id="overallProgress" style="height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); width: 0%; transition: width 0.05s ease;"></div>
-            </div>
-            <div class="progress-text" id="progressText" style="text-align: center; margin-top: 4px; font-size: 0.8rem; font-weight: 600;">PROGRESS: 0%</div>
-        </div>
-
-        <!-- Slots (will be populated by JS with per-slot ADD button) -->
-        <div class="slots-grid" id="wrapper"></div>
-
-        <!-- Color Guide -->
-        <div class="color-guide">
-            <div class="guide-title">🎨 INCOME COLOR GUIDE</div>
-            <div class="guide-grid">
-                <div class="guide-item"><div class="guide-circle you">YOU</div><div class="guide-text">YOU NODE <small>Your Position</small></div></div>
-                <div class="guide-item"><div class="guide-circle income-20">20%</div><div class="guide-text">INCOME 20% <small>Light Green</small></div></div>
-                <div class="guide-item"><div class="guide-circle income-25">25%</div><div class="guide-text">INCOME 25% <small>Light Green</small></div></div>
-                <div class="guide-item"><div class="guide-circle income-50">50%</div><div class="guide-text">INCOME 50% <small>Medium Green</small></div></div>
-                <div class="guide-item"><div class="guide-circle income-80">80%</div><div class="guide-text">INCOME 80% <small>Dark Green</small></div></div>
-                <div class="guide-item"><div class="guide-circle income-100">100%</div><div class="guide-text">INCOME 100% <small>Darkest Green</small></div></div>
-                <div class="guide-item"><div class="guide-circle noincome-20">20%</div><div class="guide-text">LOSS 20% <small>Light Red</small></div></div>
-                <div class="guide-item"><div class="guide-circle noincome-25">25%</div><div class="guide-text">LOSS 25% <small>Light Red</small></div></div>
-                <div class="guide-item"><div class="guide-circle noincome-50">50%</div><div class="guide-text">LOSS 50% <small>Medium Red</small></div></div>
-                <div class="guide-item"><div class="guide-circle noincome-80">80%</div><div class="guide-text">LOSS 80% <small>Dark Red</small></div></div>
-                <div class="guide-item"><div class="guide-circle noincome-100">100%</div><div class="guide-text">LOSS 100% <small>Darkest Red</small></div></div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Footer -->
-<div class="footer-note">
-    <div>UPDATE: 25-02-2026 | ULTRA FAST & SMOOTH</div>
-    <div><a href="https://t.me/Mrzakir156" target="_blank">@mrzakir156</a> | Support - Coming Soon...</div>
-</div>
+    <!-- PAGE 2 - DASHBOARD (FULL CALCULATOR) -->
+    <div id="page2" class="page">
+        <div class="zoom-logo" onclick="openZoomPopup()">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff9d'%3E%3Cpath d='M22.5 4.5L15 9v6l7.5 4.5v-15zM12 4.5H3c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h9c1.1 0 2-.9 2-2v-11c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E" alt="zoom">
+            <span>ZOOM</span>
+        </div>
 
-<script>
-    // ==================== CONFIG ====================
-    const configs = [
-        { name: "S30", levels: [1, 2, 4, 8, 16], price: 20 },
-        { name: "S14", levels: [1, 2, 4, 8], price: 160 },
-        { name: "S6", levels: [1, 2, 4], price: 800 },
-        { name: "S3", levels: [1, 3], price: 2000 },
-        { name: "S2", levels: [1, 2], price: 4000 },
-        { name: "S30 PRO", levels: [1, 2, 4, 8, 16], price: 2000 },
-        { name: "S14 PRO", levels: [1, 2, 4, 8], price: 6000 },
-        { name: "S6 PRO", levels: [1, 2, 4], price: 12000 },
-        { name: "S3 PRO", levels: [1, 3], price: 18000 },
-        { name: "S2 PRO", levels: [1, 2], price: 27000 }
-    ];
+        <div class="main-container">
+            <div class="main-heading">
+                <h1>WHALE BOOST<br>CALCULATOR</h1>
+                <div class="powered">CHAMPION TEAM INDIA · <a href="https://t.me/Mrzakir156" target="_blank">@t.me/Mrzakir156</a></div>
+            </div>
 
-    let selectedSlots = 0;
-    let boxes = [];
-    let globalCounter = 1;
-    let grandTotal = 0;
-    let totalInvestment = 0;
-    let autoMemberEnabled = false;
-    let autoMemberTimeout = null;
+            <!-- Slot Selector -->
+            <div class="slot-selector">
+                <div class="selector-title">⚡ SELECT SLOTS ⚡</div>
+                <div class="selector-controls">
+                    <div class="slot-input-group">
+                        <span>🎮</span>
+                        <input type="number" id="slotInput" min="1" max="10" value="5">
+                        <span>SLOTS</span>
+                    </div>
+                    <button class="gaming-btn" onclick="updateSlotSelection()">LAUNCH</button>
+                    <div class="investment-preview" id="investmentPreview">0 IGT</div>
+                </div>
+            </div>
 
-    let history = [];
-    const MAX_HISTORY = 3;
+            <!-- Stats -->
+            <div class="stats-grid" id="statsContainer" style="display: none;">
+                <div class="stat-card"><div class="stat-label">INVEST</div><div class="stat-value" id="totalInvestment">0</div></div>
+                <div class="stat-card"><div class="stat-label">INCOME</div><div class="stat-value" id="grandTotal">0</div></div>
+                <div class="stat-card"><div class="stat-label">ROI</div><div class="stat-value" id="roiDisplay">0%</div></div>
+                <div class="stat-card"><div class="stat-label">MEMBERS</div><div class="stat-value" id="totalMembers">0</div></div>
+            </div>
 
-    // ==================== HELPER FUNCTIONS ====================
-    function showToast(message, type = 'info') {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        container.appendChild(toast);
-        setTimeout(() => toast.remove(), 800);
-    }
+            <!-- Action Bar -->
+            <div class="action-bar" id="actionContainer" style="display: none;">
+                <button class="action-btn primary" onclick="addMember()">➕ GLOBAL ADD</button>
+                <button class="action-btn" onclick="toggleAutoMember()">🔄 <span id="autoMemberText">AUTO</span></button>
+                <button class="action-btn" onclick="undo()">↩️ UNDO</button>
+                <button class="action-btn" onclick="showStats()">📊 STATS</button>
+                <button class="action-btn" onclick="resetSystem()">🔄 RESET</button>
+            </div>
 
-    function toggleMode() {
-        if (document.body.classList.contains('ultra-mode')) {
-            document.body.classList.remove('ultra-mode');
-            document.getElementById('modeIcon').innerText = '🎮';
-            document.getElementById('modeText').innerText = 'HD';
-            showToast('🎮 HD MODE', 'info');
-        } else {
-            document.body.classList.add('ultra-mode');
-            document.getElementById('modeIcon').innerText = '⚡';
-            document.getElementById('modeText').innerText = 'ULTRA';
-            showToast('⚡ ULTRA MODE', 'success');
+            <!-- Progress -->
+            <div class="progress-container" id="progressContainer" style="display: none; margin: 15px 0; background: var(--glass); border-radius: 12px; padding: 10px;">
+                <div class="progress-bar" style="height: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
+                    <div class="progress-fill" id="overallProgress" style="height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); width: 0%;"></div>
+                </div>
+                <div class="progress-text" id="progressText" style="text-align: center; margin-top: 4px;">PROGRESS: 0%</div>
+            </div>
+
+            <!-- Slots Wrapper -->
+            <div class="slots-grid" id="wrapper"></div>
+
+            <!-- Color Guide (abbreviated) -->
+            <div class="color-guide">
+                <div class="guide-title">🎨 COLOR GUIDE</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
+                    <span style="background:var(--income-50); padding:2px 8px; border-radius:12px;">Income</span>
+                    <span style="background:var(--noincome-50); padding:2px 8px; border-radius:12px;">Loss</span>
+                    <span style="background:linear-gradient(145deg, var(--green), var(--blue)); padding:2px 8px; border-radius:12px;">You</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+        <div>UPDATE: 28-02-2026 14:55 | DEMO CONCEPT | <a href="https://t.me/Mrzakir156" target="_blank">@mrzakir156</a></div>
+    </div>
+
+    <script>
+        // ==================== ZOOM POPUP FUNCTIONS ====================
+        function openZoomPopup() { document.getElementById('zoomPopup').classList.add('active'); }
+        function closeZoomPopup() { document.getElementById('zoomPopup').classList.remove('active'); }
+        function joinZoom() {
+            window.open('https://us06web.zoom.us/j/6204406337?pwd=1z3ma5UUHezXZx2PSeSvALym5DIL1a.1', '_blank');
+            closeZoomPopup();
         }
-    }
 
-    function toggleTheme() {
-        if (document.body.classList.contains('dark-theme')) {
-            document.body.classList.remove('dark-theme');
-            document.body.classList.add('light-theme');
-            document.getElementById('themeIcon').innerText = '☀️';
-            document.getElementById('themeText').innerText = 'LIGHT';
-        } else {
-            document.body.classList.remove('light-theme');
-            document.body.classList.add('dark-theme');
-            document.getElementById('themeIcon').innerText = '🌙';
-            document.getElementById('themeText').innerText = 'DARK';
+        // ==================== THEME / MODE ====================
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            document.body.classList.toggle('dark-theme');
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            if (document.body.classList.contains('light-theme')) {
+                icon.innerText = '☀️'; text.innerText = 'LIGHT';
+            } else {
+                icon.innerText = '🌙'; text.innerText = 'DARK';
+            }
         }
-    }
-
-    function saveToHistory() {
-        const state = {
-            boxes: boxes.map(box => ({
-                index: box.index,
-                income: box.income,
-                recycle: box.recycle,
-                nodeStates: box.nodes.map(node => ({
-                    innerText: node.innerText,
-                    className: node.className
-                }))
-            })),
-            globalCounter,
-            grandTotal,
-            totalInvestment
-        };
-        history.push(state);
-        if (history.length > MAX_HISTORY) history.shift();
-    }
-
-    function undo() {
-        if (history.length === 0) {
-            showToast('NO HISTORY', 'error');
-            return;
+        function toggleMode() {
+            document.body.classList.toggle('ultra-mode');
+            const icon = document.getElementById('modeIcon');
+            const text = document.getElementById('modeText');
+            if (document.body.classList.contains('ultra-mode')) {
+                icon.innerText = '⚡'; text.innerText = 'ULTRA';
+                showToast('⚡ ULTRA MODE (VIBRANT)', 'success');
+            } else {
+                icon.innerText = '🎮'; text.innerText = 'HD';
+                showToast('🎮 HD MODE (FADED)', 'info');
+            }
         }
-        const previousState = history.pop();
-        globalCounter = previousState.globalCounter;
-        grandTotal = previousState.grandTotal;
-        totalInvestment = previousState.totalInvestment;
 
-        previousState.boxes.forEach((savedBox, i) => {
-            boxes[i].index = savedBox.index;
-            boxes[i].income = savedBox.income;
-            boxes[i].recycle = savedBox.recycle;
-            savedBox.nodeStates.forEach((nodeState, j) => {
-                boxes[i].nodes[j].innerText = nodeState.innerText;
-                boxes[i].nodes[j].className = nodeState.className;
+        // ==================== PAGE NAVIGATION ====================
+        function enterDashboard() {
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.add('active');
+        }
+
+        // ==================== CALCULATOR CORE ====================
+        const configs = [
+            { name: "S30", levels: [1, 2, 4, 8, 16], price: 20 },
+            { name: "S14", levels: [1, 2, 4, 8], price: 160 },
+            { name: "S6", levels: [1, 2, 4], price: 800 },
+            { name: "S3", levels: [1, 3], price: 2000 },
+            { name: "S2", levels: [1, 2], price: 4000 },
+            { name: "S30 PRO", levels: [1, 2, 4, 8, 16], price: 2000 },
+            { name: "S14 PRO", levels: [1, 2, 4, 8], price: 6000 },
+            { name: "S6 PRO", levels: [1, 2, 4], price: 12000 },
+            { name: "S3 PRO", levels: [1, 3], price: 18000 },
+            { name: "S2 PRO", levels: [1, 2], price: 27000 }
+        ];
+
+        let selectedSlots = 0;
+        let boxes = [];
+        let globalCounter = 1;
+        let grandTotal = 0;
+        let totalInvestment = 0;
+        let autoMemberEnabled = false;
+        let autoMemberTimeout = null;
+        let history = [];
+        const MAX_HISTORY = 3;
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.getElementById('toastContainer').appendChild(toast);
+            setTimeout(() => toast.remove(), 1500);
+        }
+
+        function saveToHistory() {
+            const state = {
+                boxes: boxes.map(b => ({ index: b.index, income: b.income, recycle: b.recycle, nodeStates: b.nodes.map(n => ({ innerText: n.innerText, className: n.className })) })),
+                globalCounter, grandTotal, totalInvestment
+            };
+            history.push(state);
+            if (history.length > MAX_HISTORY) history.shift();
+        }
+
+        function undo() {
+            if (!history.length) return showToast('NO HISTORY', 'error');
+            const prev = history.pop();
+            globalCounter = prev.globalCounter;
+            grandTotal = prev.grandTotal;
+            totalInvestment = prev.totalInvestment;
+            prev.boxes.forEach((sb, i) => {
+                boxes[i].index = sb.index;
+                boxes[i].income = sb.income;
+                boxes[i].recycle = sb.recycle;
+                sb.nodeStates.forEach((ns, j) => {
+                    boxes[i].nodes[j].innerText = ns.innerText;
+                    boxes[i].nodes[j].className = ns.className;
+                });
             });
-        });
-        updateStats();
-        showToast(`↩️ UNDO DONE`, 'info');
-    }
-
-    function getIncomePercentage(slotIndex, level, position, total) {
-        const last = (position === total - 1);
-        if (slotIndex === 3 || slotIndex === 8) {
-            if (level === 1 && !last) return 100;
-            return 0;
+            updateAllUI();
+            showToast('↩️ UNDO', 'info');
         }
-        switch(slotIndex) {
-            case 0: case 5:
-                if (last) return 0;
-                if (level === 2) return 25;
-                if (level === 3) return 25;
-                if (level === 4) return 50;
-                return 0;
-            case 1: case 6:
-                if (last) return 0;
-                if (level === 2) return 20;
-                if (level === 3) return 80;
-                return 0;
-            case 2: case 7:
-                if (last) return 0;
-                if (level === 2) return 100;
-                return 0;
-            case 4: case 9:
-                if (level === 1 && !last) return 100;
-                return 0;
-            default: return 0;
-        }
-    }
 
-    function getColorClass(percentage, hasIncome) {
-        if (!hasIncome) {
-            if (percentage === 20) return 'noincome-20';
-            if (percentage === 25) return 'noincome-25';
-            if (percentage === 50) return 'noincome-50';
-            if (percentage === 80) return 'noincome-80';
-            if (percentage === 100) return 'noincome-100';
-            return 'noincome-100';
-        } else {
-            if (percentage === 20) return 'income-20';
-            if (percentage === 25) return 'income-25';
-            if (percentage === 50) return 'income-50';
-            if (percentage === 80) return 'income-80';
-            if (percentage === 100) return 'income-100';
-            return 'income-50';
-        }
-    }
-
-    // ==================== MAIN FUNCTIONS ====================
-    // Add member to specific slot
-    function addMemberToSlot(slotIndex) {
-        saveToHistory();
-        let box = boxes[slotIndex];
-        if (!box) return;
-
-        if (box.index < box.nodes.length) {
-            let node = box.nodes[box.index];
-            node.innerText = globalCounter;
-
-            let level = parseInt(node.dataset.level);
-            let position = parseInt(node.dataset.position);
-            let total = parseInt(node.dataset.total);
-
-            let percentage = getIncomePercentage(slotIndex, level, position, total);
-            let hasIncome = percentage > 0;
-
-            let incomeAmount = (box.price * percentage) / 100;
-
-            if (hasIncome) {
-                box.income += incomeAmount;
-                grandTotal += incomeAmount;
+        function getIncomePercentage(slotIndex, level, position, total) {
+            const last = (position === total - 1);
+            if (slotIndex === 3 || slotIndex === 8) return (level === 1 && !last) ? 100 : 0;
+            switch(slotIndex) {
+                case 0: case 5: return last ? 0 : (level === 2 ? 25 : level === 3 ? 25 : level === 4 ? 50 : 0);
+                case 1: case 6: return last ? 0 : (level === 2 ? 20 : level === 3 ? 80 : 0);
+                case 2: case 7: return last ? 0 : (level === 2 ? 100 : 0);
+                case 4: case 9: return (level === 1 && !last) ? 100 : 0;
+                default: return 0;
             }
+        }
 
-            node.className = `node tooltip ${getColorClass(percentage, hasIncome)}`;
-
-            document.getElementById(`income-${slotIndex}`).innerHTML =
-                `<span>INC</span><span>${Math.round(box.income)}</span>`;
-
-            let progress = ((box.index) / (box.nodes.length - 1)) * 100;
-            if (box.nodes.length - 1 > 0) {
-                document.getElementById(`progress-${slotIndex}`).style.width = progress + '%';
-                document.getElementById(`progress-text-${slotIndex}`).innerText = progress.toFixed(0) + '%';
+        function getColorClass(p, hasIncome) {
+            if (!hasIncome) {
+                if (p === 20) return 'noincome-20';
+                if (p === 25) return 'noincome-25';
+                if (p === 50) return 'noincome-50';
+                if (p === 80) return 'noincome-80';
+                return 'noincome-100';
+            } else {
+                if (p === 20) return 'income-20';
+                if (p === 25) return 'income-25';
+                if (p === 50) return 'income-50';
+                if (p === 80) return 'income-80';
+                return 'income-100';
             }
+        }
 
-            box.index++;
-
-            // Check for recycle
-            if (box.index === box.nodes.length) {
-                box.recycle++;
-                document.getElementById(`recycle-${slotIndex}`).innerHTML = `🔄 ${box.recycle}`;
-
-                setTimeout(() => {
-                    for (let j = 1; j < box.nodes.length; j++) {
-                        box.nodes[j].innerText = '';
-                        box.nodes[j].className = 'node tooltip';
+        function addMember(slotIndex = null) {
+            saveToHistory();
+            let membersAdded = 0;
+            boxes.forEach((box, idx) => {
+                if (slotIndex !== null && idx !== slotIndex) return;
+                if (box.index < box.nodes.length) {
+                    let node = box.nodes[box.index];
+                    node.innerText = globalCounter;
+                    let level = parseInt(node.dataset.level);
+                    let pos = parseInt(node.dataset.position);
+                    let total = parseInt(node.dataset.total);
+                    let perc = getIncomePercentage(idx, level, pos, total);
+                    let hasIncome = perc > 0;
+                    let incomeAmount = (box.price * perc) / 100;
+                    if (hasIncome) {
+                        box.income += incomeAmount;
+                        grandTotal += incomeAmount;
                     }
-                    box.index = 1;
-                    document.getElementById(`progress-${slotIndex}`).style.width = '0%';
-                    document.getElementById(`progress-text-${slotIndex}`).innerText = '0%';
-                }, 250);
-            }
-
-            globalCounter++;
-            updateStats();
-            showToast(`MEMBER ${globalCounter-1} ADDED TO ${configs[slotIndex].name}`, 'success');
-        } else {
-            showToast('SLOT IS FULL', 'error');
-        }
-    }
-
-    // Add member to all slots (original behavior)
-    function addMemberToAll() {
-        saveToHistory();
-        let membersAdded = 0;
-
-        boxes.forEach((box, slotIndex) => {
-            if (box.index < box.nodes.length) {
-                let node = box.nodes[box.index];
-                node.innerText = globalCounter + membersAdded; // will be adjusted after loop
-
-                let level = parseInt(node.dataset.level);
-                let position = parseInt(node.dataset.position);
-                let total = parseInt(node.dataset.total);
-
-                let percentage = getIncomePercentage(slotIndex, level, position, total);
-                let hasIncome = percentage > 0;
-
-                let incomeAmount = (box.price * percentage) / 100;
-
-                if (hasIncome) {
-                    box.income += incomeAmount;
-                    grandTotal += incomeAmount;
+                    node.className = `node tooltip ${getColorClass(perc, hasIncome)}`;
+                    document.getElementById(`income-${idx}`).innerHTML = `<span>INC</span><span>${Math.round(box.income)}</span>`;
+                    let progress = ((box.index) / (box.nodes.length - 1)) * 100;
+                    document.getElementById(`progress-${idx}`).style.width = progress + '%';
+                    document.getElementById(`progress-text-${idx}`).innerText = progress.toFixed(0) + '%';
+                    box.index++;
+                    membersAdded++;
                 }
-
-                node.className = `node tooltip ${getColorClass(percentage, hasIncome)}`;
-
-                document.getElementById(`income-${slotIndex}`).innerHTML =
-                    `<span>INC</span><span>${Math.round(box.income)}</span>`;
-
-                let progress = ((box.index) / (box.nodes.length - 1)) * 100;
-                if (box.nodes.length - 1 > 0) {
-                    document.getElementById(`progress-${slotIndex}`).style.width = progress + '%';
-                    document.getElementById(`progress-text-${slotIndex}`).innerText = progress.toFixed(0) + '%';
-                }
-
-                box.index++;
-                membersAdded++;
-
                 if (box.index === box.nodes.length) {
                     box.recycle++;
-                    document.getElementById(`recycle-${slotIndex}`).innerHTML = `🔄 ${box.recycle}`;
-
+                    document.getElementById(`recycle-${idx}`).innerHTML = `🔄 ${box.recycle}`;
                     setTimeout(() => {
                         for (let j = 1; j < box.nodes.length; j++) {
                             box.nodes[j].innerText = '';
                             box.nodes[j].className = 'node tooltip';
                         }
                         box.index = 1;
-                        document.getElementById(`progress-${slotIndex}`).style.width = '0%';
-                        document.getElementById(`progress-text-${slotIndex}`).innerText = '0%';
+                        document.getElementById(`progress-${idx}`).style.width = '0%';
+                        document.getElementById(`progress-text-${idx}`).innerText = '0%';
                     }, 250);
                 }
+            });
+            if (membersAdded) {
+                globalCounter++;
+                updateStats();
+                showToast(`MEMBER ${globalCounter-1} ADDED`, 'success');
             }
-        });
-
-        if (membersAdded > 0) {
-            globalCounter += membersAdded;
-            updateStats();
-            showToast(`${membersAdded} MEMBERS ADDED TO ALL`, 'success');
         }
-    }
 
-    function toggleAutoMember() {
-        autoMemberEnabled = !autoMemberEnabled;
-        const autoText = document.getElementById('autoMemberText');
-
-        if (autoMemberEnabled) {
-            autoText.innerText = 'ON';
-            startAutoMember();
-        } else {
-            autoText.innerText = 'AUTO';
-            if (autoMemberTimeout) clearTimeout(autoMemberTimeout);
+        function toggleAutoMember() {
+            autoMemberEnabled = !autoMemberEnabled;
+            document.getElementById('autoMemberText').innerText = autoMemberEnabled ? 'ON' : 'AUTO';
+            if (autoMemberEnabled) startAutoMember();
+            else if (autoMemberTimeout) clearTimeout(autoMemberTimeout);
         }
-    }
+        function startAutoMember() {
+            if (!autoMemberEnabled) return;
+            autoMemberTimeout = setTimeout(() => {
+                addMember();
+                startAutoMember();
+            }, 500);
+        }
 
-    function startAutoMember() {
-        if (!autoMemberEnabled) return;
-        autoMemberTimeout = setTimeout(() => {
-            addMemberToAll(); // Auto adds to all slots
-            startAutoMember();
-        }, 500);
-    }
-
-    function updateStats() {
-        requestAnimationFrame(() => {
+        function updateStats() {
             document.getElementById('totalInvestment').innerText = totalInvestment.toLocaleString();
             document.getElementById('grandTotal').innerText = Math.round(grandTotal).toLocaleString();
             document.getElementById('totalMembers').innerText = globalCounter - 1;
-
-            let roi = totalInvestment > 0 ? (grandTotal / totalInvestment) * 100 : 0;
-            document.getElementById('roiDisplay').innerText = roi.toFixed(1) + '%';
-
+            let roi = totalInvestment ? (grandTotal/totalInvestment*100).toFixed(1) : 0;
+            document.getElementById('roiDisplay').innerText = roi + '%';
             let totalNodes = 0, activeNodes = 0;
-            boxes.forEach(box => {
-                totalNodes += box.nodes.length - 1;
-                activeNodes += box.index - 1;
+            boxes.forEach(b => { totalNodes += b.nodes.length-1; activeNodes += b.index-1; });
+            let prog = totalNodes ? (activeNodes/totalNodes*100).toFixed(1) : 0;
+            document.getElementById('overallProgress').style.width = prog + '%';
+            document.getElementById('progressText').innerText = `PROGRESS: ${prog}%`;
+        }
+
+        function updateAllUI() {
+            boxes.forEach((b, i) => {
+                for (let j=0; j<b.nodes.length; j++) {
+                    if (j===0) {
+                        b.nodes[j].innerText = 'YOU';
+                        b.nodes[j].className = 'node tooltip you-node';
+                    }
+                }
+                document.getElementById(`income-${i}`).innerHTML = `<span>INC</span><span>${Math.round(b.income)}</span>`;
+                document.getElementById(`recycle-${i}`).innerHTML = `🔄 ${b.recycle}`;
+                let prog = ((b.index) / (b.nodes.length-1)) * 100;
+                document.getElementById(`progress-${i}`).style.width = prog + '%';
+                document.getElementById(`progress-text-${i}`).innerText = prog.toFixed(0) + '%';
             });
+            updateStats();
+        }
 
-            let progress = totalNodes > 0 ? (activeNodes / totalNodes) * 100 : 0;
-            document.getElementById('overallProgress').style.width = progress + '%';
-            document.getElementById('progressText').innerText = `PROGRESS: ${progress.toFixed(1)}%`;
-        });
-    }
+        function showStats() {
+            let html = boxes.map((b,i) => `<div style="margin-bottom:8px;padding:8px;background:var(--glass);border-radius:8px;"><b style="color:var(--green);">${configs[i].name}</b><br>INC: ${Math.round(b.income)}<br>REC: ${b.recycle}<br>PROG: ${((b.index-1)/(b.nodes.length-1)*100).toFixed(1)}%</div>`).join('');
+            html += `<div style="padding:10px;background:linear-gradient(145deg,var(--blue),var(--purple));border-radius:8px;color:white;">TOTAL INV: ${totalInvestment} INC: ${Math.round(grandTotal)} ROI: ${(grandTotal/totalInvestment*100).toFixed(2)}%</div>`;
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('statsModal').classList.add('active');
+        }
 
-    function showStats() {
-        const modal = document.getElementById('statsModal');
-        const content = document.getElementById('modalContent');
+        function closeModal() { document.getElementById('statsModal').classList.remove('active'); }
 
-        let html = '';
-        boxes.forEach((box, i) => {
-            html += `
-                <div style="margin-bottom: 8px; padding: 8px; background: var(--glass); border-radius: 8px;">
-                    <b style="color: var(--green);">${configs[i].name}</b><br>
-                    INC: ${Math.round(box.income)} IGT<br>
-                    REC: ${box.recycle}<br>
-                    PROG: ${((box.index - 1) / (box.nodes.length - 1) * 100).toFixed(1)}%
-                </div>
-            `;
-        });
-
-        html += `
-            <div style="padding: 10px; background: linear-gradient(145deg, var(--blue), var(--purple)); border-radius: 8px; color: white; margin-top: 10px;">
-                <b>TOTAL</b><br>
-                INV: ${totalInvestment} IGT<br>
-                INC: ${Math.round(grandTotal)} IGT<br>
-                ROI: ${(grandTotal / totalInvestment * 100).toFixed(2)}%
-            </div>
-        `;
-
-        content.innerHTML = html;
-        modal.classList.add('active');
-    }
-
-    function closeModal() {
-        document.getElementById('statsModal').classList.remove('active');
-    }
-
-    function resetSystem() {
-        if (confirm('⚠️ RESET ALL?')) {
-            autoMemberEnabled = false;
-            document.getElementById('autoMemberText').innerText = 'AUTO';
+        function resetSystem() {
+            if (!confirm('⚠️ RESET ALL?')) return;
+            autoMemberEnabled = false; document.getElementById('autoMemberText').innerText = 'AUTO';
             if (autoMemberTimeout) clearTimeout(autoMemberTimeout);
-
             history = [];
-
             document.getElementById('statsContainer').style.display = 'none';
             document.getElementById('actionContainer').style.display = 'none';
             document.getElementById('progressContainer').style.display = 'none';
             document.getElementById('wrapper').classList.remove('visible');
-
             showToast('SYSTEM RESET', 'info');
         }
-    }
 
-    function enterDashboard() {
-        document.getElementById('page1').classList.remove('active');
-        document.getElementById('page2').classList.add('active');
-    }
-
-    function updateSlotSelection() {
-        const val = parseInt(document.getElementById('slotInput').value);
-        if (!val || val < 1 || val > 10) {
-            showToast('⚡ SELECT 1-10', 'error');
-            return;
+        function updateSlotSelection() {
+            const val = parseInt(document.getElementById('slotInput').value);
+            if (!val || val<1 || val>10) return showToast('⚡ SELECT 1-10', 'error');
+            selectedSlots = val;
+            document.getElementById('statsContainer').style.display = 'grid';
+            document.getElementById('actionContainer').style.display = 'flex';
+            document.getElementById('progressContainer').style.display = 'block';
+            if (autoMemberEnabled) toggleAutoMember();
+            initializeSlots();
+            document.getElementById('wrapper').classList.add('visible');
+            showToast(`🎮 ${selectedSlots} SLOTS`, 'success');
         }
 
-        selectedSlots = val;
-
-        document.getElementById('statsContainer').style.display = 'grid';
-        document.getElementById('actionContainer').style.display = 'flex';
-        document.getElementById('progressContainer').style.display = 'block';
-
-        if (autoMemberEnabled) toggleAutoMember();
-
-        initializeSlots();
-        document.getElementById('wrapper').classList.add('visible');
-
-        showToast(`🎮 ${selectedSlots} SLOTS`, 'success');
-    }
-
-    function initializeSlots() {
-        const wrapper = document.getElementById('wrapper');
-        wrapper.innerHTML = '';
-        boxes = [];
-        grandTotal = 0;
-        globalCounter = 1;
-        totalInvestment = 0;
-        history = [];
-
-        for (let i = 0; i < selectedSlots; i++) {
-            totalInvestment += configs[i].price;
-
-            const slot = document.createElement('div');
-            slot.className = 'slot-card';
-            slot.id = `slot-${i}`;
-
-            slot.innerHTML = `
-                <div class="slot-header">
-                    <span class="slot-name">${configs[i].name}</span>
-                    <span class="slot-price">${configs[i].price}</span>
-                </div>
-                <div class="matrix-levels" id="levels-${i}"></div>
-                <div class="slot-progress">
-                    <div class="slot-progress-fill" id="progress-${i}" style="width: 0%"></div>
-                </div>
-                <div class="slot-progress-text" id="progress-text-${i}">0%</div>
-                <div class="slot-footer">
-                    <div class="income-box" id="income-${i}">
-                        <span>INC</span>
-                        <span>0</span>
+        function initializeSlots() {
+            const wrapper = document.getElementById('wrapper');
+            wrapper.innerHTML = '';
+            boxes = [];
+            grandTotal = 0; globalCounter = 1; totalInvestment = 0; history = [];
+            for (let i=0; i<selectedSlots; i++) {
+                totalInvestment += configs[i].price;
+                const slot = document.createElement('div');
+                slot.className = 'slot-card';
+                slot.id = `slot-${i}`;
+                slot.innerHTML = `
+                    <div class="slot-header">
+                        <span class="slot-name">${configs[i].name}</span>
+                        <span class="slot-price">${configs[i].price}</span>
                     </div>
-                    <div style="display: flex; gap: 5px; align-items: center;">
+                    <div class="matrix-levels" id="levels-${i}"></div>
+                    <div class="slot-progress"><div class="slot-progress-fill" id="progress-${i}" style="width:0%"></div></div>
+                    <div class="slot-progress-text" id="progress-text-${i}">0%</div>
+                    <div class="slot-add-container">
+                        <button class="action-btn slot-add" onclick="addMember(${i})">➕ ADD THIS SLOT</button>
+                    </div>
+                    <div class="slot-footer">
+                        <div class="income-box" id="income-${i}"><span>INC</span><span>0</span></div>
                         <div class="recycle-badge" id="recycle-${i}">🔄 0</div>
-                        <button class="slot-add-btn" onclick="addMemberToSlot(${i})">➕ ADD</button>
                     </div>
-                </div>
-            `;
-            wrapper.appendChild(slot);
-
-            const levelsDiv = document.getElementById(`levels-${i}`);
-
-            configs[i].levels.forEach((count, l) => {
-                const levelRow = document.createElement('div');
-                levelRow.className = 'level-row';
-                levelRow.setAttribute('data-level', l);
-
-                if ((i === 3 || i === 8) && l === 1) {
-                    levelRow.setAttribute('data-s3', 'true');
-                }
-
-                const nodesDiv = document.createElement('div');
-                nodesDiv.className = 'nodes';
-                nodesDiv.id = `nodes-${i}-${l}`;
-
-                for (let j = 0; j < count; j++) {
-                    const node = document.createElement('div');
-                    node.className = 'node tooltip';
-                    node.dataset.level = l;
-                    node.dataset.position = j;
-                    node.dataset.total = count;
-
-                    if (l === 0 && j === 0) {
-                        node.innerText = 'YOU';
-                        node.classList.add('you-node');
-                        node.setAttribute('data-slot-text', `SLOT ${i + 1}`);
+                `;
+                wrapper.appendChild(slot);
+                const levelsDiv = document.getElementById(`levels-${i}`);
+                configs[i].levels.forEach((count, l) => {
+                    const levelRow = document.createElement('div');
+                    levelRow.className = 'level-row';
+                    levelRow.setAttribute('data-level', l);
+                    if ((i===3||i===8) && l===1) levelRow.setAttribute('data-s3','true');
+                    const nodesDiv = document.createElement('div');
+                    nodesDiv.className = 'nodes';
+                    nodesDiv.id = `nodes-${i}-${l}`;
+                    for (let j=0; j<count; j++) {
+                        const node = document.createElement('div');
+                        node.className = 'node tooltip';
+                        node.dataset.level = l;
+                        node.dataset.position = j;
+                        node.dataset.total = count;
+                        if (l===0 && j===0) {
+                            node.innerText = 'YOU';
+                            node.classList.add('you-node');
+                        }
+                        const tooltip = document.createElement('span');
+                        tooltip.className = 'tooltip-text';
+                        tooltip.innerText = `L${l+1}`;
+                        node.appendChild(tooltip);
+                        nodesDiv.appendChild(node);
                     }
-
-                    const tooltip = document.createElement('span');
-                    tooltip.className = 'tooltip-text';
-                    tooltip.innerText = `L${l + 1}`;
-                    node.appendChild(tooltip);
-                    nodesDiv.appendChild(node);
+                    levelRow.innerHTML = `<div class="level-label">L${l+1}</div>`;
+                    levelRow.appendChild(nodesDiv);
+                    levelsDiv.appendChild(levelRow);
+                });
+                const nodes = [];
+                for (let l=0; l<configs[i].levels.length; l++) {
+                    for (let j=0; j<configs[i].levels[l]; j++) {
+                        const node = document.querySelector(`#nodes-${i}-${l} .node:nth-child(${j+1})`);
+                        if (node) nodes.push(node);
+                    }
                 }
-
-                levelRow.innerHTML = `<div class="level-label">L${l + 1}</div>`;
-                levelRow.appendChild(nodesDiv);
-                levelsDiv.appendChild(levelRow);
-            });
-
-            const nodes = [];
-            for (let l = 0; l < configs[i].levels.length; l++) {
-                for (let j = 0; j < configs[i].levels[l]; j++) {
-                    const node = document.querySelector(`#nodes-${i}-${l} .node:nth-child(${j + 1})`);
-                    if (node) nodes.push(node);
-                }
+                boxes.push({ nodes, index:1, income:0, recycle:0, price:configs[i].price });
             }
-
-            boxes.push({
-                nodes: nodes,
-                index: 1,
-                income: 0,
-                recycle: 0,
-                price: configs[i].price
-            });
+            updateStats();
         }
 
-        updateStats();
-    }
+        document.getElementById('slotInput').addEventListener('input', function() {
+            const val = parseInt(this.value);
+            if (val>0 && val<=10) {
+                let total = 0;
+                for (let i=0; i<val; i++) total += configs[i].price;
+                document.getElementById('investmentPreview').innerHTML = `${total} IGT`;
+            } else document.getElementById('investmentPreview').innerHTML = `0 IGT`;
+        });
 
-    document.getElementById('slotInput').addEventListener('input', function() {
-        const val = parseInt(this.value);
-        if (val > 0 && val <= 10) {
-            let total = 0;
-            for (let i = 0; i < val; i++) total += configs[i].price;
-            document.getElementById('investmentPreview').innerHTML = `${total} IGT`;
-        } else {
-            document.getElementById('investmentPreview').innerHTML = `0 IGT`;
-        }
-    });
-
-    window.onclick = function(event) {
-        const modal = document.getElementById('statsModal');
-        if (event.target === modal) modal.classList.remove('active');
-    };
-</script>
-
+        window.onclick = (e) => {
+            if (e.target.classList.contains('modal')) closeModal();
+            if (e.target.classList.contains('zoom-popup')) closeZoomPopup();
+        };
+    </script>
 </body>
 </html>
